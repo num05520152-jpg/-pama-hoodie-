@@ -1,63 +1,72 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - PAMA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - PAMA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-4 font-sans">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4">รายการออเดอร์ทั้งหมด</h1>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="p-2 border">เวลา</th>
-                        <th class="p-2 border">ชื่อ</th>
-                        <th class="p-2 border">เบอร์โทร</th>
-                        <th class="p-2 border">ที่อยู่</th>
-                        <th class="p-2 border">สี</th>
-                        <th class="p-2 border">ไซส์</th>
-                        <th class="p-2 border">ราคา</th>
-                    </tr>
-                </thead>
-                <tbody id="orderTable">
-                    <tr><td colspan="7" class="p-4 text-center">กำลังโหลดข้อมูล...</td></tr>
-                </tbody>
-            </table>
-        </div>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">รายการสั่งซื้อสินค้า (Admin Dashboard)</h1>
+      <button onclick="loadOrders()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg">รีเฟรชข้อมูล</button>
     </div>
 
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbz1PpTIclzNzQC8T_gOjxfhBpgLV3pUFDinjKCVa23PlGw-2zq8L82sRq393YjbFReq/exec";
+    <div class="overflow-x-auto bg-gray-800 rounded-xl shadow-lg">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-700 text-gray-300">
+          <tr>
+            <th class="p-4">วัน/เวลา</th>
+            <th class="p-4">ชื่อ-นามสกุล</th>
+            <th class="p-4">เบอร์โทร</th>
+            <th class="p-4">ที่อยู่</th>
+            <th class="p-4">สี</th>
+            <th class="p-4">ไซส์</th>
+            <th class="p-4">จำนวน</th>
+            <th class="p-4">ยอดเงิน</th>
+          </tr>
+        </thead>
+        <tbody id="orderTable" class="divide-y divide-gray-700">
+          <tr>
+            <td colspan="8" class="p-4 text-center text-gray-400">กำลังโหลดข้อมูล...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-        fetch(scriptURL)
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.getElementById('orderTable');
-                tbody.innerHTML = '';
-                if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center">ยังไม่มีรายการสั่งซื้อ</td></tr>';
-                    return;
-                }
-                data.reverse().forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="p-2 border text-xs">${row.timestamp || '-'}</td>
-                        <td class="p-2 border font-medium">${row.name || '-'}</td>
-                        <td class="p-2 border">${row.phone || '-'}</td>
-                        <td class="p-2 border text-sm">${row.address || '-'}</td>
-                        <td class="p-2 border">${row.color || '-'}</td>
-                        <td class="p-2 border">${row.size || '-'}</td>
-                        <td class="p-2 border font-bold">590</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(err => {
-                document.getElementById('orderTable').innerHTML = '<tr><td colspan="7" class="p-4 text-center text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
-            });
-    </script>
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx51kd1Af3dqTfcwMGK9c_h8QIFdMwv9A-rXKGFYwiJC2dEzj2R0EgYo7c8xMEBB5Q3/exec"; 
+
+    function loadOrders() {
+      fetch(scriptURL)
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('orderTable');
+          tbody.innerHTML = '';
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-400">ยังไม่มีรายการสั่งซื้อ</td></tr>';
+            return;
+          }
+          data.forEach(order => {
+            tbody.innerHTML += `
+              <tr class="hover:bg-gray-750">
+                <td class="p-4">${order.timestamp}</td>
+                <td class="p-4">${order.name}</td>
+                <td class="p-4">${order.phone}</td>
+                <td class="p-4">${order.address}</td>
+                <td class="p-4">${order.color}</td>
+                <td class="p-4">${order.size}</td>
+                <td class="p-4">${order.quantity}</td>
+                <td class="p-4 text-yellow-400 font-bold">${order.totalPrice} บาท</td>
+              </tr>
+            `;
+          });
+        });
+    }
+
+    window.onload = loadOrders;
+  </script>
 </body>
 </html>
