@@ -1,74 +1,74 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>สั่งซื้อเสื้อฮู้ด - PAMA</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สั่งซื้อเสื้อฮู้ด - PAMA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
-  <div class="max-w-md mx-auto bg-white min-h-screen shadow-md p-4">
-    <a href="index.html" class="text-sm text-gray-500 mb-4 block">&larr; ย้อนกลับ</a>
-    <h2 class="text-xl font-bold mb-4">ฟอร์มสั่งซื้อสินค้า</h2>
-    <form id="orderForm" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium">ชื่อ-นามสกุล</label>
-        <input type="text" name="name" required class="w-full border rounded p-2 mt-1">
-      </div>
-      <div>
-        <label class="block text-sm font-medium">เบอร์โทรศัพท์</label>
-        <input type="tel" name="phone" required class="w-full border rounded p-2 mt-1">
-      </div>
-      <div>
-        <label class="block text-sm font-medium">ที่อยู่จัดส่ง</label>
-        <textarea name="address" required class="w-full border rounded p-2 mt-1" rows="3"></textarea>
-      </div>
-      <div>
-        <label class="block text-sm font-medium">เลือกสี</label>
-        <select name="color" class="w-full border rounded p-2 mt-1">
-          <option value="White">สีขาว (White)</option>
-          <option value="Black">สีดำ (Black)</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-sm font-medium">เลือกไซส์</label>
-        <select name="size" class="w-full border rounded p-2 mt-1">
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-        </select>
-      </div>
-      <button type="submit" id="submitBtn" class="w-full bg-black text-white py-3 rounded font-bold">ยืนยันการสั่งซื้อ (590 บาท)</button>
-    </form>
-  </div>
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-md p-4">
+        <a href="index.html" class="text-sm text-gray-500 mb-4 block">&larr; ย้อนกลับ</a>
+        <h2 class="text-xl font-bold mb-4">ฟอร์มสั่งซื้อสินค้า</h2>
+        <form id="orderForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">ชื่อ-นามสกุล</label>
+                <input type="text" name="name" required class="w-full border rounded p-2 mt-1">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">เบอร์โทรศัพท์</label>
+                <input type="tel" name="phone" required class="w-full border rounded p-2 mt-1">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">ที่อยู่จัดส่ง</label>
+                <textarea name="address" required class="w-full border rounded p-2 mt-1" rows="3"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">เลือกสี</label>
+                <select name="color" class="w-full border rounded p-2 mt-1">
+                    <option value="White">สีขาว (White)</option>
+                    <option value="Black">สีดำ (Black)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">เลือกไซส์</label>
+                <select name="size" class="w-full border rounded p-2 mt-1">
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <button type="submit" id="submitBtn" class="w-full bg-black text-white py-3 rounded font-bold">ยืนยันการสั่งซื้อ (590 บาท)</button>
+        </form>
+    </div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxbTF1T3wyfmXBRzcbyVQYvt3MmQCyyNKkNnlep88fDGoDQt2m1qfJOn9IOWIdalMy7/exec";
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbz1PpTIclzNzQC8T_gOjxfhBpgLV3pUFDinjKCVa23PlGw-2zq8L82sRq393YjbFReq/exec";
 
-    document.getElementById('orderForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerText = 'กำลังส่งข้อมูล...';
+        document.getElementById('orderForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = 'กำลังส่งข้อมูล...';
 
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
 
-      fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(res => {
-        alert('สั่งซื้อเรียบร้อยแล้ว!');
-        window.location.href = 'index.html';
-      })
-      .catch(err => {
-        alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-        btn.disabled = false;
-        btn.innerText = 'ยืนยันการสั่งซื้อ (590 บาท)';
-      });
-    });
-  </script>
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                alert('สั่งซื้อเรียบร้อยแล้ว!');
+                window.location.href = 'index.html';
+            })
+            .catch(err => {
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                btn.disabled = false;
+                btn.innerText = 'ยืนยันการสั่งซื้อ (590 บาท)';
+            });
+        });
+    </script>
 </body>
 </html>
